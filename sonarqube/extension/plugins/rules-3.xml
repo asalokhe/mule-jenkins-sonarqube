@@ -1,0 +1,11 @@
+<rulestore type="mule3">
+	<ruleset category="application">
+		<rule id="1"
+			name="Application should have used APIKit to auto-generate the implementation interface"
+			description="Application should have used APIKit to auto-generate the implementation interface"
+			severity="MAJOR" applies="application" type="code_smell">
+			count(//mule:mule/apikit:config)>0
+		</rule>
+	</ruleset>
+</rulestore>
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d02188c7-b94d-4d20-a7dc-fcbd8d2d9cd0" >
+		<http:listener-connection host="0.0.0.0" port="8081"/>
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="a28399dc-1fa9-45e3-a1dc-09046439646c" file="sonar-demo.yaml" />
+	<flow name="sonar-demoFlow" doc:id="902b1dc2-5b72-42a5-ba27-f39c172c22d7" >
+		<http:listener doc:name="/sonar-demo" doc:id="97af361f-6f66-4f5d-ab45-a3791d888a6c" config-ref="HTTP_Listener_config" path="/sonar-demo"/>
+		<logger level="INFO" doc:name="Request In Logger" doc:id="f2f78613-a770-4afb-b7a2-62e203b228f1" message='#["\nRequest In Logger: " ++ payload default ""]'/>
+		<set-variable value="ABC" doc:name="1" doc:id="6067e739-f26d-43be-8da3-641469faa5b3" variableName="ABC"/>
+		<ee:transform doc:name="Transform Message" doc:id="b1561749-19a9-4e73-934d-2051ebaf4c0d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "message form sonar-demo @: " ++ now()
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Response Out Logger" doc:id="770071d2-f54d-4c9c-8998-bd9b73eba7b5" message='#["\n Response Out Logger: " ++ write(payload default "")]'/>
+	</flow>
+</mule>

@@ -1,0 +1,33 @@
+version: '3'
+services:
+  # Build a Sonarqube server. The below servicename "sonarqube" will act as a hostname in the network while calling from Jenkins server.
+  sonarqube:
+    build:
+      context: sonarqube/
+    container_name: sonarqube
+    ports:
+      - 9000:9000
+    # Volumes can be bind mounts or docker volumes. 
+    volumes: #Bind mount option as like docker-compose version 3.2 is not working due to file persmission error during mount. 
+      - C:\Installed Software\volumes\sonarqube\data:/opt/sonarqube/data # host_system_bind_path:container_bind_path
+      - C:\Installed Software\volumes\sonarqube\logs:/opt/sonarqube/logs
+      - C:\Installed Software\volumes\sonarqube\extension:/opt/sonarqube/extensions
+    networks:
+      - mynetwork
+    environment:
+      - SONAR_FORCEAUTHENTICATION=false
+  
+  # Build a Jenkins server. The below servicename "jenkins" will be a hostname for accessing the Jenkins server from SonarQube (predefined Network)
+  jenkins:
+    build:
+      context: jenkins/
+    container_name: jenkins
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - C:\Installed Software\volumes\Jenkins\jenkins_home:/var/jenkins_home
+    networks:
+      - mynetwork
+networks:
+  mynetwork:

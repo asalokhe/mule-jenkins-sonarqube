@@ -1,0 +1,7 @@
+json:
+  logger:
+    application:
+      name: "sonar-demo"
+      version: "1.0.0-SNAPSHOT"
+mule:
+  env: "dev"
