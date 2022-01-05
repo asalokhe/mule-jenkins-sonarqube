@@ -20,14 +20,27 @@ pipeline {
     }
 
     stages {
+
         /* Checkout Code From SCM
         Adjust in credentials for private repo with appropriate syntax */
-        stage('code checkout from Git') {
+
+        stage('CODE-CHECKOUT') {
             steps{
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/asalokhe/mule-jenkins-sonarqube.git']]])
             }
         }
 
+        /* Run Munit test before quality check as we can add the Code Coverage Quality Gate validation in Sonar*/
+
+        stage('RUN-MUNIT') {
+            steps {
+            configFileProvider([configFile(fileId: '5d13b8ee-42ad-4a58-afce-79dbdaa62a2a', variable: 'MAVEN_SETTINGS')]) {
+            sh "printenv | sort"
+            sh 'mvn -B -s "$MAVEN_SETTINGS" clean test'
+                }
+            }
+        }
+        
         /* Pre-Req: 
             1. Plugin in Jenkins: "SonarQube Scanner for Jenkins" 
             2. Jenkins: Configure to the SonarQube Server instance in the "Configure System" settings in Jenkins "http://sonarqube:9000" (No trailing slash)
@@ -36,9 +49,10 @@ pipeline {
               mvn sonar:sonar -Dsonar.host.url=http://mysonarqubeserver:9000 -Dsonar.sources=src/ 
               sonar.host.url is not always required as withSonarQubeEnv('SonarQube') is configured in Jenkins and in local settings.xml has 
               profile section. */
-        stage("Quality Check against SonarQube mule:rule") {
+
+        stage("CHECK-SONARQUBE-CODE-QUALITY") {
            steps{
-               withSonarQubeEnv('SonarQube'){
+               withSonarQubeEnv('SonarQube') {
                    sh 'mvn sonar:sonar -Dsonar.sources=src/main/'
                }
            }
@@ -49,18 +63,21 @@ pipeline {
         2. SonarQube: Quality gate needs to be predefined in sonarqube.
         3. SonarQube: http://jenkins:8080/sonarqube-webhook/ needs to be predefined in sonar-server.
         Based on the analysis, Webhook url will be called. This step checks the status & decide whether to proceed or fail the further pipeline */
-        stage("Quality Gate Check") {
+
+        stage("QUALITY-GATE-CHECK") {
            steps{
                waitForQualityGate abortPipeline: true
            }
        }
         
-        /* Unit Test the Code and Build the *.Jar file*/
-        stage('Unittest-And-Package') {
+        /* Unit Test the Code and Build the *.Jar file
+           NOTE: -DskipTests to skip Munitunit testing as Munit testing is executed during quality check */
+
+        stage('PACKAGE-CODE') {
             steps {
             configFileProvider([configFile(fileId: '5d13b8ee-42ad-4a58-afce-79dbdaa62a2a', variable: 'MAVEN_SETTINGS')]) {
             sh "printenv | sort"
-            sh 'mvn -B -s "$MAVEN_SETTINGS" clean package'
+            sh 'mvn -B -s "$MAVEN_SETTINGS" clean package -DskipTests'
                 }
             }
         }
@@ -71,7 +88,7 @@ pipeline {
            Reference: https://docs.mulesoft.com/mule-runtime/4.4/mmp-concept
            NOTE: -DskipTests to skip Munitunit testing.   */
            
-        stage('Deploy to Sandbox') {
+        stage('DEPLOY-CODE') {
             steps {
             configFileProvider([configFile(fileId: '5d13b8ee-42ad-4a58-afce-79dbdaa62a2a', variable: 'MAVEN_SETTINGS')]) {
             sh "printenv | sort"
