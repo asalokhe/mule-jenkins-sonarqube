@@ -33,34 +33,34 @@ Mule Project quality check using Sonarqube and further deploy the to cloudhub us
     mule-validation-sonarqube-plugin-{version}-mule.jar to sonar-home/extensions/plugins
 2. Copy rules Mule 3 Rules or Mule 4 Rules to sonar-home/extensions/plugins The jar file of the plugin has to be placed in the        following folder 
     /extensions/plugins/ (Rules can be updated as per requirement)  
-    ![extension_Plugins_Configuration](Images\Plugin_Installation_In_SonarQube.png)
+    ![extension_Plugins_Configuration](Images/Plugin_Installation_In_SonarQube.png)
 
 ### SonarQube Configuration
 1. Generate the access token using which Jenkins server can reach SonarQube;
-    ![Access_Token_For_Jenkins](Images\Generate_Access_Token_For_Jenkins.png)
+    ![Access_Token_For_Jenkins](Images/Generate_Access_Token_For_Jenkins.png)
 2. Remove the default sonarqube .xml scanner to avoid mule and xml language both scanning the same file with different rules. 
-    ![Remove_Default_XML_Scanner](Images\Remove_Default_XML_Scanner.png)
+    ![Remove_Default_XML_Scanner](Images/Remove_Default_XML_Scanner.png)
 3. Add the webhook for Jenkins server so that sonarqube server can call after finishing the quality check
-    ![Configure_Webhook_For_Jenkins_Callback](Images\Configure_Webhook_For_Jenkins_Callback.png)
+    ![Configure_Webhook_For_Jenkins_Callback](Images/Configure_Webhook_For_Jenkins_Callback.png)
 4. Defind Quality Gate to check and Pass or Fail the code quality. 
-    ![SonarQube-QualityGate](Images\SonarQube_Quality_Gate.png)
+    ![SonarQube-QualityGate](Images/SonarQube_Quality_Gate.png)
 
 ########################################################################################################################################
 ## Jenkins
 1. Add the required credentials 
 2. Add Managed File Plugins, Credentials Plugin, 
 3. Add SonarQube server in Managed Jenkins> Configure system>
-    ![Add_SonarQube_Server](Images\Jenkins_Configure System.png)
+    ![Add_SonarQube_Server](Images/Jenkins_Configure System.png)
 4. Install Maven in Jenkins server.
 5. Configure the required job with github url:
-    ![Configure_Job](Images\Job_Configuration.png)
+    ![Configure_Job](Images/Job_Configuration.png)
 
 ########################################################################################################################################
 ## Mule Application
 1. To test the code from local
     mvn sonar:sonar -Dsonar.host.url=http://hostname:port -Dsonar.sources=src/
 2. Add Appropriate entry in settings.xml
-    ![Add_Profile](Images\Settings_File.png)
+    ![Add_Profile](Images/Settings_File.png)
 
 ########################################################################################################################################
 ## Verification
