@@ -32,11 +32,14 @@ pipeline {
             1. Plugin in Jenkins: "SonarQube Scanner for Jenkins" 
             2. Jenkins: Configure to the SonarQube Server instance in the "Configure System" settings in Jenkins "http://sonarqube:9000" (No trailing slash)
             3. SonarQube: Remove ".xml" from XML Language.
-            4. Run the command to do the code qualuty analysis */
+            4. Run the command to do the code qualuty analysis 
+              mvn sonar:sonar -Dsonar.host.url=http://mysonarqubeserver:9000 -Dsonar.sources=src/ 
+              sonar.host.url is not always required as withSonarQubeEnv('SonarQube') is configured in Jenkins and in local settings.xml has 
+              profile section. */
         stage("Quality Check against SonarQube mule:rule") {
            steps{
                withSonarQubeEnv('SonarQube'){
-                   sh 'mvn sonar:sonar'
+                   sh 'mvn sonar:sonar -Dsonar.sources=src/main/'
                }
            }
        }

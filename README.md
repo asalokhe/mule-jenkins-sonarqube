@@ -77,5 +77,8 @@ Mule Project quality check using Sonarqube and further deploy the to cloudhub us
     https://www.sonarplugins.com/mulesoft 
     https://github.com/UltimateSoftware/sonar-mulesoft
     https://mvnrepository.com/artifact/com.ultimatesoftware.sonar.plugins.mulesoft/mulesoftplugin
+3.  http://xmltoolbox.appspot.com/xpath_generator.html
+    https://www.freeformatter.com/xpath-tester.html#ad-output
+    https://developer.mozilla.org/en-US/docs/Web/XPath/Functions
 
 ########################################################################################################################################

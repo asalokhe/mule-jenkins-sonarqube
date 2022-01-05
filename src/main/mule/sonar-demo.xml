@@ -13,15 +13,10 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="sonar-demoFlow" doc:id="902b1dc2-5b72-42a5-ba27-f39c172c22d7" >
 		<http:listener doc:name="/sonar-demo" doc:id="97af361f-6f66-4f5d-ab45-a3791d888a6c" config-ref="HTTP_Listener_config" path="/sonar-demo"/>
 		<logger level="INFO" doc:name="Request In Logger" doc:id="f2f78613-a770-4afb-b7a2-62e203b228f1" message='#["\nRequest In Logger: " ++ payload default ""]'/>
-		<set-variable value="ABC" doc:name="1" doc:id="6067e739-f26d-43be-8da3-641469faa5b3" variableName="ABC"/>
+		<set-variable value="ABC" doc:name="testVariable" doc:id="6067e739-f26d-43be-8da3-641469faa5b3" variableName="testVariable"/>
 		<ee:transform doc:name="Transform Message" doc:id="b1561749-19a9-4e73-934d-2051ebaf4c0d" >
 			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	"message": "message form sonar-demo @: " ++ now()
-}]]></ee:set-payload>
+				<ee:set-payload resource="dwl/populate_response.dwl" />
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Response Out Logger" doc:id="770071d2-f54d-4c9c-8998-bd9b73eba7b5" message='#["\n Response Out Logger: " ++ write(payload default "")]'/>
