@@ -12,6 +12,9 @@
 		<munit:execution >
 			<flow-ref doc:name="Flow-ref to sonar-demoFlow" doc:id="3e5bfa31-01fb-4dae-b6fc-cdd42da4f2f8" name="sonar-demoFlow"/>
 		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert payload" doc:id="f2cc3508-3bd3-4d05-9422-f93164b52d12" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
 	</munit:test>
 
 
