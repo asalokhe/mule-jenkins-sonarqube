@@ -23,8 +23,9 @@ services:
       context: jenkins/
     container_name: jenkins
     ports:
-      - 8080:8080
       - 50000:50000
+      # UI
+      - 8080:8080
     volumes:
       - C:\Installed Software\volumes\Jenkins\jenkins_home:/var/jenkins_home
     networks:
