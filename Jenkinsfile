@@ -24,7 +24,7 @@ pipeline {
         Adjust in credentials for private repo with appropriate syntax */
         stage('code checkout from Git') {
             steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/asalokhe/mule-sonarqube-demo.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/asalokhe/mule-jenkins-sonarqube.git']]])
             }
         }
 
