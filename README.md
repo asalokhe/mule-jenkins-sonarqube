@@ -31,7 +31,7 @@ Mule Project quality check using Sonarqube and further deploy the to cloudhub us
 ### Plugin Installation
 1. Copy the generated file from the  
     mule-validation-sonarqube-plugin-{version}-mule.jar to sonar-home/extensions/plugins
-2. Copy rules Mule 3 Rules or Mule 4 Rules to sonar-home/extensions/plugins The jar file of the plugin has to be placed in the        following folder 
+2. Copy rules Mule 3 Rules or Mule 4 Rules to sonar-home/extensions/plugins The jar file of the plugin has to be placed in the following folder 
     /extensions/plugins/ (Rules can be updated as per requirement)  
     ![extension_Plugins_Configuration](Images/Plugin_Installation_In_SonarQube.png)
 
@@ -47,17 +47,17 @@ Mule Project quality check using Sonarqube and further deploy the to cloudhub us
 
 ########################################################################################################################################
 ## Jenkins
-1. Add the required credentials 
-2. Add Managed File Plugins, Credentials Plugin, 
-3. Add SonarQube server in Managed Jenkins> Configure system>
-    ![Add_SonarQube_Server](Images/Jenkins_Configure System.png)
-4. Install Maven in Jenkins server.
-5. Configure the required job with github url:
+1. Add Managed File Plugins, Credentials Plugin
+2. Install Maven in Jenkins server.
+3. Add the required credentials 
+4. Add SonarQube server in Managed Jenkins > Configure system
+    ![Add_SonarQube_Server](Images/Jenkins_Configure System.png) 
+5. create a required job with your repository
     ![Configure_Job](Images/Job_Configuration.png)
 
 ########################################################################################################################################
 ## Mule Application
-1. To test the code from local
+1. To test the code quality from local setup
     mvn sonar:sonar -Dsonar.host.url=http://hostname:port -Dsonar.sources=src/
 2. Add Appropriate entry in settings.xml
     ![Add_Profile](Images/Settings_File.png)
@@ -65,6 +65,9 @@ Mule Project quality check using Sonarqube and further deploy the to cloudhub us
 ########################################################################################################################################
 ## Verification
 1. Install the Jenkins & SonarQube server stack. 
+```sh
+    docker-compose up
+```
 2. Run the Jenkins job which pulls the code from Github server. 
 3. Check the job status; if success, then code will be deployed to MuleSoft Cloudhub. 
 
